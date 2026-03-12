@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      width: 220px;
+      padding: 15px;
+      background-color: #1e1e1e;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      margin: 0;
+    }
+    /* --- NEW CSS FOR INFO BOX --- */
+    #infoBox {
+      background-color: #2a2a2a;
+      border-radius: 6px;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #444;
+    }
+    #channelName { font-weight: bold; font-size: 14px; margin-bottom: 5px; color: #fff;}
+    #emojiCount { font-size: 12px; color: #aaa; }
+    /* ---------------------------- */
+
+    button {
+      background-color: #3a3a3a;
+      color: white;
+      border: 1px solid #555;
+      padding: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 6px;
+      width: 100%;
+      transition: background-color 0.2s;
+    }
+    button:hover { background-color: #505050; }
+    button:disabled {
+      background-color: #2a2a2a;
+      color: #666;
+      cursor: not-allowed;
+      border-color: #333;
+    }
+    #progressContainer {
+      display: none;
+      width: 100%;
+      background-color: #333;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 15px;
+      height: 12px;
+    }
+    #progressBar {
+      width: 0%;
+      height: 100%;
+      background-color: #4caf50;
+      transition: width 0.2s ease-out;
+    }
+    #status {
+      font-size: 13px;
+      margin-top: 8px;
+      color: #aaa;
+      min-height: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="infoBox">
+    <div id="channelName">Checking page...</div>
+    <div id="emojiCount"></div>
+  </div>
+
+  <button id="downloadBtn" disabled>Download Emojis</button>
+  
+  <div id="progressContainer">
+    <div id="progressBar"></div>
+  </div>
+  <div id="status"></div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
