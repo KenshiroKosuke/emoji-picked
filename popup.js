@@ -1,14 +1,14 @@
-const downloadBtn = document.getElementById('downloadBtn');
-const channelNameEl = document.getElementById('channelName');
-const emojiCountEl = document.getElementById('emojiCount');
-const progressContainer = document.getElementById('progressContainer');
-const progressBar = document.getElementById('progressBar');
-const statusText = document.getElementById('status');
+const downloadBtn = document.getElementById("downloadBtn");
+const channelNameEl = document.getElementById("channelName");
+const emojiCountEl = document.getElementById("emojiCount");
+const progressContainer = document.getElementById("progressContainer");
+const progressBar = document.getElementById("progressBar");
+const statusText = document.getElementById("status");
 
 // Run this the moment the popup opens
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  
+
   if (!tab || !tab.url || !tab.url.includes("youtube.com")) {
     channelNameEl.innerText = "Please open YouTube.";
     return;
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       channelNameEl.innerText = response.channel;
       channelNameEl.style.color = "#fff";
       emojiCountEl.innerText = `${response.count} emojis ready to download.`;
-      
+
       if (response.count > 0) {
         downloadBtn.disabled = false;
       }
@@ -39,9 +39,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 });
 
-downloadBtn.addEventListener('click', async () => {
+downloadBtn.addEventListener("click", async () => {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  
+
   if (!tab || !tab.url || !tab.url.includes("youtube.com")) {
     statusText.innerText = "Please open YouTube.";
     return;
@@ -53,8 +53,9 @@ downloadBtn.addEventListener('click', async () => {
 
   chrome.tabs.sendMessage(tab.id, { action: "start_scraping" }, (response) => {
     if (chrome.runtime.lastError) {
+      // --- return; from content.js
       statusText.innerText = "Error. Please refresh the page.";
-      downloadBtn.disabled = false;
+      downloadBtn.disabled = false; // reactivate the botton (optional?)
     }
   });
 });
@@ -64,18 +65,18 @@ chrome.runtime.onMessage.addListener((message) => {
   if (message.action === "download_progress") {
     progressContainer.style.display = "block";
     statusText.innerText = `Downloading: ${message.current} / ${message.total}`;
-    
+
     // Calculate percentage and update bar width
     const percent = (message.current / message.total) * 100;
     progressBar.style.width = `${percent}%`;
-    
+
     if (message.current === message.total) {
       statusText.innerText = "Zipping files...";
     }
   } else if (message.action === "download_complete") {
     statusText.innerText = "Download Complete!";
     progressBar.style.backgroundColor = "#2196F3"; // Turn blue when done
-    
+
     // Reset UI after 3 seconds
     setTimeout(() => {
       downloadBtn.disabled = false;
